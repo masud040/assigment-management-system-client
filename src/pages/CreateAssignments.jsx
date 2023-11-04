@@ -3,6 +3,8 @@ import DatePicker from "react-datepicker";
 import { SlCalender } from "react-icons/sl";
 import "react-datepicker/dist/react-datepicker.css";
 import useAuth from "../hooks/useAuth";
+import axios from "axios";
+import Swal from "sweetalert2";
 const CreateAssignments = () => {
   const { user } = useAuth();
   const [startDate, setStartDate] = useState(new Date());
@@ -27,7 +29,18 @@ const CreateAssignments = () => {
       description,
       date,
     };
-    console.log(assignment);
+    axios
+      .post("http://localhost:5000/create-assignment", { assignment })
+      .then((res) => {
+        if (res.data.acknowledged) {
+          Swal.fire({
+            title: "Great!",
+            text: "Your assignment has been created",
+            icon: "success",
+            confirmButtonText: "Okay",
+          });
+        }
+      });
   };
   return (
     <div className="mb-6">

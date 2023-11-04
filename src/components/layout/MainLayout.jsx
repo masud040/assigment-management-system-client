@@ -5,10 +5,10 @@ import Container from "../ui/Container";
 import logo from "../../assets/images/logo.png";
 const MainLayout = () => {
   return (
-    <div className="drawer">
+    <div className="">
       <input id="my-drawer-3" type="checkbox" className="drawer-toggle" />
 
-      <div className="drawer-content  flex flex-col">
+      <div className="flex flex-col">
         {/* Navbar */}
         <div className="bg-[#050618] mb-8">
           <div className="max-w-[1280px]  mx-auto  navbar ">

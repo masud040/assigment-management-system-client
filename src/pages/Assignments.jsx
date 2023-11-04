@@ -1,7 +1,37 @@
+import axios from "axios";
+import { useEffect, useState } from "react";
+import AssignmentCard from "../components/AssignmentCard";
+
 const Assignments = () => {
+  const [assignments, setAssignments] = useState([]);
+  const [level, setLevel] = useState("");
+  useEffect(() => {
+    axios
+      .get(`http://localhost:5000/assignments?level=${level}`)
+      .then((res) => setAssignments(res.data));
+  }, [level]);
   return (
     <div>
-      <h1>I am assignments page</h1>
+      <div className="flex justify-end mb-5">
+        <select
+          onChange={(e) => setLevel(e.target.value)}
+          defaultValue={level}
+          className="select select-info focus:outline-none"
+        >
+          <option disabled selected>
+            Sort level
+          </option>
+          <option value="">All</option>
+          <option value="easy">Easy</option>
+          <option value="medium">Medium</option>
+          <option value="hard">Hard</option>
+        </select>
+      </div>
+      <div className="grid grid-cols-3 gap-4">
+        {assignments?.map((assignment) => (
+          <AssignmentCard key={assignment._id} assignment={assignment} />
+        ))}
+      </div>
     </div>
   );
 };
