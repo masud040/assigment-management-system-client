@@ -2,7 +2,7 @@ import { GithubAuthProvider, GoogleAuthProvider } from "firebase/auth";
 import { useState } from "react";
 import { AiFillEyeInvisible, AiFillEye } from "react-icons/ai";
 import { FaGithub, FaGoogle } from "react-icons/fa";
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import useAuth from "../hooks/useAuth";
 import toast from "react-hot-toast";
 const googleProvider = new GoogleAuthProvider();
@@ -10,10 +10,16 @@ const githubProvider = new GithubAuthProvider();
 const Login = () => {
   const { socialLogin, loginUser } = useAuth();
   const [show, setShow] = useState(false);
+  const { state } = useLocation();
+  const navigate = useNavigate();
+
   const handleSocialLogin = (provider) => {
     socialLogin(provider)
       .then(() => {
         toast.success("Login success");
+        {
+          state ? navigate(state) : navigate("/");
+        }
       })
       .catch((err) => toast.error(err.message));
   };
@@ -26,6 +32,9 @@ const Login = () => {
       .then(() => {
         form.reset();
         toast.success("Login success");
+        {
+          state ? navigate(state) : navigate("/");
+        }
       })
       .catch((err) => toast.error(err.message));
   };
