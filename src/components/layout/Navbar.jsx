@@ -1,8 +1,12 @@
 import { NavLink } from "react-router-dom";
 import useAuth from "../../hooks/useAuth";
+import toast from "react-hot-toast";
 
 const Navbar = () => {
-  const user = { email: "masud" };
+  const { logoutUser, user } = useAuth();
+  const handleLogout = () => {
+    logoutUser().then(() => toast.success("Log out successfully"));
+  };
   return (
     <div className="flex gap-2 items-center text-white">
       <NavLink
@@ -68,7 +72,12 @@ const Navbar = () => {
           >
             Submitted Assignments
           </NavLink>
-          <button className="btn btn-ghost text-xs btn-sm">LogOut</button>
+          <button
+            onClick={handleLogout}
+            className="btn btn-ghost text-xs btn-sm"
+          >
+            LogOut
+          </button>
           <img
             title={user?.displayName}
             src="https://lh3.googleusercontent.com/a/ACg8ocLTcVaIDaosTPwL4HRx3WNqCJKi08icMAb3jUTJNxhYTw=s96-c-rg-br100"

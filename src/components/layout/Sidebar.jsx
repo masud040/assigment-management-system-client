@@ -1,7 +1,12 @@
 import { NavLink } from "react-router-dom";
+import useAuth from "../../hooks/useAuth";
+import toast from "react-hot-toast";
 
 const Sidebar = () => {
-  const user = {};
+  const { logoutUser, user } = useAuth();
+  const handleLogout = () => {
+    logoutUser().then(() => toast.success("Log out successfully"));
+  };
   return (
     <div className="menu  space-y-2 w-80 min-h-full bg-base-200">
       {" "}
@@ -67,7 +72,9 @@ const Sidebar = () => {
           >
             Submitted Assignments
           </NavLink>
-          <button className="btn btn-ghost text-xs ">LogOut</button>{" "}
+          <button onClick={handleLogout} className="btn btn-ghost text-xs ">
+            LogOut
+          </button>{" "}
         </div>
       ) : (
         <div className="flex flex-col gap-2">

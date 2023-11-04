@@ -1,23 +1,46 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { FaGoogle, FaGithub } from "react-icons/fa";
 import { AiFillEyeInvisible, AiFillEye } from "react-icons/ai";
+import useAuth from "../hooks/useAuth";
+import toast from "react-hot-toast";
+import { GithubAuthProvider, GoogleAuthProvider } from "firebase/auth";
+const googleProvider = new GoogleAuthProvider();
+const githubProvider = new GithubAuthProvider();
 const Register = () => {
+  const { createUser, socialLogin, setNameAndImage } = useAuth();
   const [show, setShow] = useState(false);
+  const navigate = useNavigate();
+  const handleSocialLogin = (provider) => {
+    socialLogin(provider)
+      .then(() => {
+        toast.success("Login success");
+      })
+      .catch((err) => toast.error(err.message));
+  };
   const handleRegister = (e) => {
     e.preventDefault();
     const form = e.target;
     const name = form.name.value;
-    const photoUrl = form.photo.value;
+    const photo = form.photo.value;
     const email = form.email.value;
     const password = form.password.value;
-    const user = {
-      name,
-      photoUrl,
-      email,
-      password,
-    };
-    console.log(user);
+    // if (!/^(?=.*[A-Z])(?=.*[^a-zA-Z0-9]).{6}$/.test(password)) {
+    //   return toast.error(
+    //     "Password must have 6 characters and one number and capital letter and one small letter and one special character"
+    //   );
+    // }
+    createUser(email, password)
+      .then(() => {
+        setNameAndImage(name, photo)
+          .then(() => {
+            toast.success("Register Success");
+            form.reset();
+            navigate("/");
+          })
+          .catch((err) => console.log(err.message));
+      })
+      .catch((err) => console.log(err.message));
   };
   return (
     <div className="relative flex flex-col rounded-xl text-gray-500 mb-8 w-[90%] my-8 md:w-[50%] bg-[#0d0929] mx-auto p-10">
@@ -31,7 +54,7 @@ const Register = () => {
             <input
               className="peer h-full w-full 
           bg-[#131237]
-          rounded-md border border-blue-gray-200 border-t-transparent px-3 py-3 font-sans text-sm font-normal text-blue-gray-700 outline outline-0 transition-all placeholder-shown:border placeholder-shown:border-blue-gray-200 placeholder-shown:border-t-blue-gray-200 focus:border-2 focus:border-pink-500 focus:border-t-transparent focus:outline-0 disabled:border-0 disabled:bg-blue-gray-50"
+          rounded-md border border-blue-gray-200 border-t-transparent px-3 py-3 font-sans text-sm font-normal text-blue-gray-700 outline outline-0 transition-all placeholder-shown:border placeholder-shown:border-blue-gray-200 placeholder-shown:border-t-blue-gray-200 focus:border-2 focus:border-pink-500 focus:border-t-transparent focus:outline-0 disabled:border-0 "
               placeholder=" "
               type="text"
               name="name"
@@ -154,7 +177,7 @@ const Register = () => {
       <div className="divider">OR</div>
       <div className="bg-gradient-to-r w-full  rounded-3xl my-1 from-[#3c4fdf] via-[#6354e6] to-[#985cf0] p-[1px] ">
         <Link
-          //   onClick={() => loginWithSocials(googleProvider)}
+          onClick={() => handleSocialLogin(googleProvider)}
           className="flex  justify-center items-center gap-4 bg-[#131237] p-2 rounded-3xl"
         >
           <span>
@@ -165,7 +188,7 @@ const Register = () => {
       </div>
       <div className="bg-gradient-to-r w-full  rounded-3xl my-1 from-[#3c4fdf] via-[#6354e6] to-[#985cf0] p-[1px] mt-5">
         <Link
-          //   onClick={() => loginWithSocials(githubProvider)}
+          onClick={() => handleSocialLogin(githubProvider)}
           className="flex  justify-center items-center gap-4 bg-[#131237] p-2 rounded-3xl"
         >
           <span>

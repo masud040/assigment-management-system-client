@@ -1,18 +1,41 @@
+import { GithubAuthProvider, GoogleAuthProvider } from "firebase/auth";
 import { useState } from "react";
 import { AiFillEyeInvisible, AiFillEye } from "react-icons/ai";
 import { FaGithub, FaGoogle } from "react-icons/fa";
 import { Link } from "react-router-dom";
-
+import useAuth from "../hooks/useAuth";
+import toast from "react-hot-toast";
+const googleProvider = new GoogleAuthProvider();
+const githubProvider = new GithubAuthProvider();
 const Login = () => {
+  const { socialLogin, loginUser } = useAuth();
   const [show, setShow] = useState(false);
-
+  const handleSocialLogin = (provider) => {
+    socialLogin(provider)
+      .then(() => {
+        toast.success("Login success");
+      })
+      .catch((err) => toast.error(err.message));
+  };
+  const handleLogin = (e) => {
+    e.preventDefault();
+    const form = e.target;
+    const email = form.email.value;
+    const password = form.password.value;
+    loginUser(email, password)
+      .then(() => {
+        form.reset();
+        toast.success("Login success");
+      })
+      .catch((err) => toast.error(err.message));
+  };
   return (
     <div className="relative flex flex-col rounded-xl text-gray-500 mb-8 w-[90%] my-8 md:w-[50%] bg-[#0d0929] mx-auto p-10">
       <h4 className="block font-sans text-4xl font-semibold leading-snug tracking-normal text-blue-gray-900 antialiased text-[#e8aaff]">
         Login
       </h4>
 
-      <form className="mt-8 mb-2 ">
+      <form onSubmit={handleLogin} className="mt-8 mb-2 ">
         <div className="mb-4 flex flex-col gap-6">
           <div className="relative h-11 w-full min-w-[200px]">
             <input
@@ -110,7 +133,7 @@ const Login = () => {
       <div className="divider">OR</div>
       <div className="bg-gradient-to-r w-full  rounded-3xl my-1 from-[#3c4fdf] via-[#6354e6] to-[#985cf0] p-[1px] ">
         <Link
-          //   onClick={() => loginWithSocials(googleProvider)}
+          onClick={() => handleSocialLogin(googleProvider)}
           className="flex  justify-center items-center gap-4 bg-[#131237] p-2 rounded-3xl"
         >
           <span>
@@ -121,7 +144,7 @@ const Login = () => {
       </div>
       <div className="bg-gradient-to-r w-full  rounded-3xl my-1 from-[#3c4fdf] via-[#6354e6] to-[#985cf0] p-[1px] mt-5">
         <Link
-          //   onClick={() => loginWithSocials(githubProvider)}
+          onClick={() => handleSocialLogin(githubProvider)}
           className="flex  justify-center items-center gap-4 bg-[#131237] p-2 rounded-3xl"
         >
           <span>

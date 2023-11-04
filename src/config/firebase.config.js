@@ -1,5 +1,6 @@
 import { initializeApp } from "firebase/app";
-import getAuth from "firebase/auth";
+import { getAuth } from "firebase/auth";
+
 const firebaseConfig = {
   apiKey: "AIzaSyBQck8LQHrmCSP4nDyq_C92gYjTEFKi7w0",
   authDomain: "assignment-management-sy-5a2db.firebaseapp.com",
