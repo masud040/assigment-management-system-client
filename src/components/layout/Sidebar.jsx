@@ -1,86 +1,102 @@
 import { NavLink } from "react-router-dom";
 
 const Sidebar = () => {
+  const user = {};
   return (
     <div className="menu  space-y-2 w-80 min-h-full bg-base-200">
-      {/* Sidebar content here */}
+      {" "}
       <NavLink
         to="/"
         className={({ isActive, isPending }) =>
           isPending
-            ? "btn btn-ghost"
+            ? "btn btn-ghost text-xs"
             : isActive
-            ? "btn btn-error"
-            : "btn btn-ghost "
+            ? "btn btn-error text-xs "
+            : "btn btn-ghost text-xs "
         }
       >
         Home
       </NavLink>
-
       <NavLink
-        to="/about"
+        to="/assignments"
         className={({ isActive, isPending }) =>
           isPending
-            ? "btn btn-ghost"
+            ? "btn btn-ghost text-xs "
             : isActive
-            ? "btn btn-error "
-            : "btn btn-ghost "
+            ? "btn btn-error text-xs "
+            : "btn btn-ghost text-xs "
         }
       >
-        About
+        Assignments
       </NavLink>
-
-      <NavLink
-        to="/contact"
-        className={({ isActive, isPending }) =>
-          isPending
-            ? "btn btn-ghost"
-            : isActive
-            ? "btn btn-error "
-            : "btn btn-ghost "
-        }
-      >
-        Contact
-      </NavLink>
-      <NavLink
-        to="/order"
-        className={({ isActive, isPending }) =>
-          isPending
-            ? "btn btn-ghost"
-            : isActive
-            ? "btn btn-error "
-            : "btn btn-ghost "
-        }
-      >
-        Order
-      </NavLink>
-      <NavLink
-        to="/services"
-        className={({ isActive, isPending }) =>
-          isPending
-            ? "btn btn-ghost"
-            : isActive
-            ? "btn btn-error "
-            : "btn btn-ghost "
-        }
-      >
-        Service
-      </NavLink>
-
-      <button className="btn btn-ghost ">LogOut</button>
-
-      <NavLink
-        to="/login"
-        className={({ isActive, isPending }) =>
-          isPending
-            ? "btn btn-ghost"
-            : isActive
-            ? "btn btn-error "
-            : "btn btn-ghost "
-        }
-      >
-        Login
-      </NavLink>
+      {user?.email ? (
+        <div className="flex flex-col gap-2">
+          <NavLink
+            to="/create-assignments"
+            className={({ isActive, isPending }) =>
+              isPending
+                ? "btn btn-ghost text-xs "
+                : isActive
+                ? "btn btn-error text-xs "
+                : "btn btn-ghost  text-xs "
+            }
+          >
+            Create Assignments
+          </NavLink>
+          <NavLink
+            to="/my-assignments"
+            className={({ isActive, isPending }) =>
+              isPending
+                ? "btn btn-ghost text-xs "
+                : isActive
+                ? "btn btn-error text-xs "
+                : "btn btn-ghost  text-xs "
+            }
+          >
+            My Assignments
+          </NavLink>
+          <NavLink
+            to="/submitted-assignments"
+            className={({ isActive, isPending }) =>
+              isPending
+                ? "btn btn-ghost text-xs "
+                : isActive
+                ? "btn btn-error text-xs "
+                : "btn btn-ghost text-xs "
+            }
+          >
+            Submitted Assignments
+          </NavLink>
+          <button className="btn btn-ghost text-xs ">LogOut</button>{" "}
+        </div>
+      ) : (
+        <div className="flex flex-col gap-2">
+          <NavLink
+            to="/login"
+            className={({ isActive, isPending }) =>
+              isPending
+                ? "btn btn-ghost text-xs "
+                : isActive
+                ? "btn btn-error text-xs "
+                : "btn btn-ghost text-xs "
+            }
+          >
+            Login
+          </NavLink>
+          <NavLink
+            to={`/register`}
+            className={({ isActive, isPending }) =>
+              isPending
+                ? "btn btn-ghost text-xs "
+                : isActive
+                ? "btn btn-error text-xs "
+                : "btn btn-ghost text-xs "
+            }
+          >
+            Register
+          </NavLink>
+        </div>
+      )}
     </div>
   );
 };

@@ -21,14 +21,7 @@ const route = createBrowserRouter([
         path: "assignments",
         element: <Assignments />,
       },
-      {
-        path: "login",
-        element: <Login />,
-      },
-      {
-        path: "register",
-        element: <Register />,
-      },
+
       {
         path: "create-assignments",
         element: <CreateAssignments />,
@@ -42,6 +35,14 @@ const route = createBrowserRouter([
         element: <SubmittedAssignments />,
       },
     ],
+  },
+  {
+    path: "/login",
+    element: <Login />,
+  },
+  {
+    path: "/register",
+    element: <Register />,
   },
 ]);
 export default route;
