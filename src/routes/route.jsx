@@ -9,6 +9,7 @@ import MyAssignment from "../pages/MyAssignment";
 import SubmittedAssignments from "../pages/SubmittedAssignments";
 import PrivateRoute from "./PrivateRoute";
 import ViewAssignment from "../pages/ViewAssignment";
+import UpdateAssignment from "../pages/UpdateAssignment";
 
 const route = createBrowserRouter([
   {
@@ -45,11 +46,29 @@ const route = createBrowserRouter([
       },
       {
         path: "my-assignments",
-        element: <MyAssignment />,
+        element: (
+          <PrivateRoute>
+            <MyAssignment />
+          </PrivateRoute>
+        ),
       },
       {
         path: "submitted-assignments",
-        element: <SubmittedAssignments />,
+        element: (
+          <PrivateRoute>
+            <SubmittedAssignments />
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: "update-assignment/:id",
+        element: (
+          <PrivateRoute>
+            <UpdateAssignment />
+          </PrivateRoute>
+        ),
+        loader: ({ params }) =>
+          fetch(`http://localhost:5000/assignment/${params.id}`),
       },
     ],
   },

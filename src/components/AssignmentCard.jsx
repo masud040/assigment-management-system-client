@@ -1,8 +1,38 @@
+import axios from "axios";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
-const AssignmentCard = ({ assignment }) => {
+import useAuth from "../hooks/useAuth";
+import Swal from "sweetalert2";
+const AssignmentCard = ({ assignment, assignments, setAssignments }) => {
+  const { user } = useAuth();
+  const email = user?.email;
   const { _id, title, marks, thumbnailImage, difficultLevel } =
     assignment || {};
+
+  const handleDelete = (id) => {
+    axios
+      .delete(`http://localhost:5000/assignment/?id=${id}&email=${email}`)
+      .then((res) => {
+        if (res.data.deletedCount > 0) {
+          Swal.fire({
+            title: "Success!",
+            text: "Deleted successfully",
+            icon: "success",
+            confirmButtonText: "Okay",
+          });
+          const remaining = assignments.filter((assign) => assign._id !== _id);
+          setAssignments(remaining);
+        } else {
+          Swal.fire({
+            title: "Error!",
+            text: "You are not allowed to delete this assignment",
+            icon: "error",
+            confirmButtonText: "Okay",
+          });
+        }
+      });
+  };
+
   return (
     <div className="bg-[#0c0d21] flex flex-col p-3 rounded-md ">
       <img
@@ -20,14 +50,20 @@ const AssignmentCard = ({ assignment }) => {
       <div className="flex justify-between gap-4 my-3">
         <Link
           to={`/viewAssignment/${_id}`}
-          className="p-2 text-sm rounded-md text-white bg-gradient-to-r from-violet-500 to-fuchsia-500"
+          className="p-2 text-xs md:text-sm rounded-md text-white bg-gradient-to-r from-violet-500 font-semibold to-fuchsia-500"
         >
           View Assignment
         </Link>
-        <button className=" p-2 rounded-md text-sm text-white bg-gradient-to-r from-violet-500 to-fuchsia-500">
+        <Link
+          to={`/update-assignment/${_id}`}
+          className=" p-2 rounded-md text-xs md:text-sm text-white bg-gradient-to-r from-violet-500 font-semibold to-green-500"
+        >
           Update Assignment
-        </button>
-        <button className=" p-2 rounded-md text-sm text-white bg-gradient-to-r from-violet-500 to-fuchsia-500">
+        </Link>
+        <button
+          onClick={() => handleDelete(_id)}
+          className=" p-2 rounded-md text-xs md:text-sm text-white bg-gradient-to-r from-red-500 font-semibold to-fuchsia-500"
+        >
           Delete Assignment
         </button>
       </div>
@@ -36,6 +72,8 @@ const AssignmentCard = ({ assignment }) => {
 };
 AssignmentCard.propTypes = {
   assignment: PropTypes.object,
+  assignments: PropTypes.array,
+  setAssignments: PropTypes.func,
 };
 
 export default AssignmentCard;

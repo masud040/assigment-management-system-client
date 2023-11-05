@@ -1,45 +1,69 @@
 import { useState } from "react";
+import { Navigate, useLoaderData, useNavigate } from "react-router-dom";
+
 import DatePicker from "react-datepicker";
 
 import "react-datepicker/dist/react-datepicker.css";
 import useAuth from "../hooks/useAuth";
 import axios from "axios";
 import Swal from "sweetalert2";
-const CreateAssignments = () => {
+
+const UpdateAssignment = () => {
+  const assignment = useLoaderData();
+  const navigate = useNavigate();
+
   const { user } = useAuth();
   const [startDate, setStartDate] = useState(new Date());
-  const [level, setLevel] = useState("");
   const shortDate = new Date(startDate).toDateString();
-  const AddAssignment = (e) => {
+  const {
+    _id,
+    title,
+    marks,
+    thumbnailImage,
+    difficultLevel,
+    description,
+    date,
+  } = assignment || {};
+  const [level, setLevel] = useState(difficultLevel);
+  const convertedDate = new Date(date);
+  const UpdateAssignment = (e) => {
     e.preventDefault();
     const form = e.target;
     const email = user?.email;
     const title = form.title.value;
     const marks = form.marks.value;
-    const thumbnailImage = form.thumbnail.value;
+    const thumbnail = form.thumbnail.value;
     const difficultLevel = level;
     const description = form.description.value;
     const date = shortDate;
-    const assignment = {
+    const updateData = {
       email,
       title,
       marks,
-      thumbnailImage,
+      thumbnail,
       difficultLevel,
       description,
       date,
     };
     axios
-      .post("http://localhost:5000/create-assignment", { assignment })
+      .patch(`http://localhost:5000/assignment/?id=${_id}`, updateData)
       .then((res) => {
-        if (res.data.acknowledged) {
+        if (res.data.modifiedCount > 0) {
           Swal.fire({
             title: "Great!",
-            text: "Your assignment has been created",
+            text: "Your assignment has been updated",
             icon: "success",
             confirmButtonText: "Okay",
           });
-          form.reset();
+          navigate("/assignments");
+        } else {
+          Swal.fire({
+            title: "Error!",
+            text: "Your can't update your assignment",
+            icon: "error",
+            confirmButtonText: "Okay",
+          });
+          navigate("/assignments");
         }
       });
   };
@@ -47,11 +71,11 @@ const CreateAssignments = () => {
     <div className="mb-6">
       <div className="text-center mb-6">
         <h1 className="text-2xl bg-gradient-to-r from-blue-600 via-green-500  to-indigo-400 inline-block text-transparent bg-clip-text ">
-          Create An Assignment
+          Update Assignment
         </h1>
       </div>
       <form
-        onSubmit={AddAssignment}
+        onSubmit={UpdateAssignment}
         className="bg-slate-500 p-6 rounded-lg min-w-[350px] md:min-w-[600px]"
       >
         <div className="md:flex gap-5 justify-between mb-4">
@@ -62,8 +86,7 @@ const CreateAssignments = () => {
             <input
               type="text"
               name="title"
-              required
-              placeholder="Assignment title"
+              defaultValue={title}
               className="input input-bordered focus:outline-none"
             />
           </div>
@@ -74,8 +97,7 @@ const CreateAssignments = () => {
             <input
               type="number"
               name="marks"
-              placeholder="Assignment marks"
-              required
+              defaultValue={marks}
               className="input input-bordered focus:outline-none "
             />
           </div>
@@ -88,8 +110,7 @@ const CreateAssignments = () => {
             <input
               type="url"
               name="thumbnail"
-              placeholder="Thumbnail URL"
-              required
+              defaultValue={thumbnailImage}
               className="input input-bordered focus:outline-none"
             />
           </div>
@@ -100,11 +121,8 @@ const CreateAssignments = () => {
             <select
               onChange={(e) => setLevel(e.target.value)}
               className="select w-full focus:outline-none"
-              required
+              defaultValue={difficultLevel}
             >
-              <option disabled selected>
-                Select level
-              </option>
               <option value="easy">Easy</option>
               <option value="medium">Medium</option>
               <option value="hard">Hard</option>
@@ -119,9 +137,8 @@ const CreateAssignments = () => {
               </span>
             </label>
             <textarea
-              placeholder="Assignment description"
               name="description"
-              required
+              defaultValue={description}
               className="textarea focus:outline-none textarea-bordered textarea-md p-1 pb-3"
             ></textarea>
           </div>
@@ -130,19 +147,18 @@ const CreateAssignments = () => {
               <span className="label-text font-bold">Date</span>
             </label>
             <DatePicker
-              required
+              selected={convertedDate}
               className="p-3 w-full rounded-lg"
-              selected={startDate}
               onChange={(date) => setStartDate(date)}
             />
           </div>
         </div>
         <button type="submit" className="mt-3  btn btn-secondary">
-          Add Assignment
+          Update Assignment
         </button>
       </form>
     </div>
   );
 };
 
-export default CreateAssignments;
+export default UpdateAssignment;
