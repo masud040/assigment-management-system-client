@@ -9,7 +9,6 @@ import MyAssignment from "../pages/MyAssignment";
 import SubmittedAssignments from "../pages/SubmittedAssignments";
 import PrivateRoute from "./PrivateRoute";
 import ViewAssignment from "../pages/ViewAssignment";
-import Submission from "../pages/Submission";
 
 const route = createBrowserRouter([
   {
@@ -34,14 +33,6 @@ const route = createBrowserRouter([
         loader: ({ params }) => {
           return fetch(`http://localhost:5000/assignment/${params.id}`);
         },
-      },
-      {
-        path: "/submission",
-        element: (
-          <PrivateRoute>
-            <Submission />
-          </PrivateRoute>
-        ),
       },
 
       {

@@ -1,19 +1,86 @@
-import { Link, useLoaderData } from "react-router-dom";
+import { useLoaderData } from "react-router-dom";
 import detailsThumbnail from "../assets/images/assignmentDetails.jpeg";
+import useAuth from "../hooks/useAuth";
+import axios from "axios";
+import Swal from "sweetalert2";
+
 const ViewAssignment = () => {
   const assignment = useLoaderData();
-  const {
-    _id,
-    email,
-    title,
-    marks,
-    thumbnailImage,
-    difficultLevel,
-    description,
-    date,
-  } = assignment || {};
+  const { user } = useAuth();
+
+  const { title, marks, thumbnailImage, difficultLevel, description, date } =
+    assignment || {};
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const form = e.target;
+
+    const pdf = form.pdf.value;
+    const note = form.note.value;
+
+    const submittedAssignment = {
+      title,
+      marks,
+      examinee_name: user?.displayName,
+      status: "pending",
+      pdf: pdf,
+      note: note,
+    };
+    axios
+      .post("http://localhost:5000/submit-assignment", submittedAssignment)
+      .then((res) => {
+        console.log(res.data);
+        if (res.data.acknowledged) {
+          Swal.fire({
+            title: "Success",
+            text: "Assignment submitted successfully",
+            icon: "success",
+            confirmButtonText: "Okay",
+          });
+        }
+      });
+  };
   return (
     <div>
+      <dialog id="my_modal_4" className="modal">
+        <form
+          method="dialog"
+          onSubmit={handleSubmit}
+          className=" w-[400px]  md:w-[500px]"
+        >
+          <div className="modal-box w-11/12 max-w-5xl">
+            <label className="label">
+              <span className="font-bold label-text">PDF URL</span>
+            </label>
+            <input
+              type="text"
+              name="pdf"
+              className="input focus:outline-none input-info w-full"
+              placeholder="Enter PDF URL"
+            />
+            <label className="label">
+              <span className="font-bold label-text mt-4">Note</span>
+            </label>
+            <textarea
+              name="note"
+              className="textarea focus:outline-none textarea-info w-full textarea-md "
+              placeholder="Enter a note"
+            ></textarea>
+
+            <div className=" flex justify-between mt-6">
+              <form method="dialog">
+                <button className="btn btn-error">Close</button>
+              </form>
+              <button
+                type="submit"
+                className="btn text-white bg-gradient-to-r from-violet-500 to-fuchsia-500"
+              >
+                Submit
+              </button>
+            </div>
+          </div>
+        </form>
+      </dialog>
       <div className="relative">
         <img
           className="w-full object-contain rounded-md"
@@ -36,12 +103,12 @@ const ViewAssignment = () => {
           <p className="text-md font-bold">Created Date: {date}</p>
           <p className="font-semibold text-justify">{description}</p>
           <div>
-            <Link
-              to={"/submission"}
+            <button
+              onClick={() => document.getElementById("my_modal_4").showModal()}
               className="btn mt-4 text-sm text-white bg-gradient-to-r from-violet-500 to-fuchsia-500"
             >
               Take assignment
-            </Link>
+            </button>
           </div>
         </div>
       </div>

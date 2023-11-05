@@ -18,9 +18,6 @@ const Assignments = () => {
           defaultValue={level}
           className="select select-info focus:outline-none"
         >
-          <option disabled selected>
-            Sort level
-          </option>
           <option value="">All</option>
           <option value="easy">Easy</option>
           <option value="medium">Medium</option>

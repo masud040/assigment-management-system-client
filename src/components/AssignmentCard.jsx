@@ -27,6 +27,9 @@ const AssignmentCard = ({ assignment }) => {
         <button className=" p-2 rounded-md text-sm text-white bg-gradient-to-r from-violet-500 to-fuchsia-500">
           Update Assignment
         </button>
+        <button className=" p-2 rounded-md text-sm text-white bg-gradient-to-r from-violet-500 to-fuchsia-500">
+          Delete Assignment
+        </button>
       </div>
     </div>
   );
