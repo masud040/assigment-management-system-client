@@ -7,7 +7,7 @@ const Assignments = () => {
   const [level, setLevel] = useState("");
   useEffect(() => {
     axios
-      .get(`http://localhost:5000/assignments?level=${level}`)
+      .get(`http://localhost:5000/assignments?difficultLevel=${level}`)
       .then((res) => setAssignments(res.data));
   }, [level]);
   return (
@@ -27,7 +27,7 @@ const Assignments = () => {
           <option value="hard">Hard</option>
         </select>
       </div>
-      <div className="grid grid-cols-3 gap-4">
+      <div className="grid md:grid-cols-2  lg:grid-cols-3 gap-6">
         {assignments?.map((assignment) => (
           <AssignmentCard key={assignment._id} assignment={assignment} />
         ))}
