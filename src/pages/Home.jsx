@@ -29,6 +29,7 @@ const Home = () => {
           {features?.map((feature) => {
             return (
               <div
+                data-aos="fade-up"
                 key={feature._id}
                 className="bg-slate-200 p-4 rounded-lg w-96 mx-auto"
               >

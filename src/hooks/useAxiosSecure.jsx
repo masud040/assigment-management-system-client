@@ -20,7 +20,7 @@ const useAxiosSecure = () => {
         }
       }
     );
-  }, []);
+  }, [logoutUser]);
   return axiosSecure;
 };
 

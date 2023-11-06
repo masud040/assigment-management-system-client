@@ -47,7 +47,10 @@ const AssignmentCard = ({ assignment, assignments, setAssignments }) => {
   };
 
   return (
-    <div className="bg-[#0c0d21] flex flex-col p-3 rounded-md ">
+    <div
+      data-aos="fade-up"
+      className="bg-[#0c0d21] flex flex-col p-3 rounded-md "
+    >
       <img
         className="h-52 md:h-60  w-full rounded-md"
         src={thumbnailImage}

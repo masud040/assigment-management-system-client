@@ -1,8 +1,9 @@
-import axios from "axios";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import AssignmentCard from "../components/AssignmentCard";
 import { useLoaderData } from "react-router-dom";
 import useAxiosSecure from "../hooks/useAxiosSecure";
+import { useQuery } from "@tanstack/react-query";
+import { useEffect } from "react";
 
 const Assignments = () => {
   const [assignments, setAssignments] = useState([]);

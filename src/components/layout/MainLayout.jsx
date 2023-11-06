@@ -4,7 +4,13 @@ import Sidebar from "./Sidebar";
 import Container from "../ui/Container";
 import logo from "../../assets/images/logo.png";
 import Footer from "../Footer";
+import Aos from "aos";
+import "aos/dist/aos.css";
+import { useEffect } from "react";
 const MainLayout = () => {
+  useEffect(() => {
+    Aos.init();
+  }, []);
   return (
     <div className="">
       <input id="my-drawer-3" type="checkbox" className="drawer-toggle" />
