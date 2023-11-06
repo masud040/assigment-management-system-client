@@ -3,7 +3,7 @@ import { useEffect } from "react";
 import useAuth from "./useAuth";
 
 const axiosSecure = axios.create({
-  baseURL: "http://localhost:5000",
+  baseURL: "https://assignment-management-system-server-side.vercel.app",
   withCredentials: true,
 });
 const useAxiosSecure = () => {
@@ -16,11 +16,12 @@ const useAxiosSecure = () => {
       },
       function (error) {
         if (error.response.status === 401 || error.response.status) {
+          console.log(error);
           logoutUser();
         }
       }
     );
-  }, [logoutUser]);
+  }, []);
   return axiosSecure;
 };
 

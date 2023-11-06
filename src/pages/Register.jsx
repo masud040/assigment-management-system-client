@@ -15,6 +15,7 @@ const Register = () => {
     socialLogin(provider)
       .then(() => {
         toast.success("Login success");
+        navigate("/");
       })
       .catch((err) => toast.error(err.message));
   };
@@ -25,11 +26,16 @@ const Register = () => {
     const photo = form.photo.value;
     const email = form.email.value;
     const password = form.password.value;
-    // if (!/^(?=.*[A-Z])(?=.*[^a-zA-Z0-9]).{6}$/.test(password)) {
-    //   return toast.error(
-    //     "Password must have 6 characters and one number and capital letter and one small letter and one special character"
-    //   );
-    // }
+    if (password.length < 6) {
+      return toast.error(
+        "Password must have 6 characters and one number and capital letter and one small letter and one special character"
+      );
+    }
+    if (!/^(?=.*[A-Z])(?=.*[^a-zA-Z0-9]).{6}$/.test(password)) {
+      return toast.error(
+        "Password must have 6 characters and one number and capital letter and one small letter and one special character"
+      );
+    }
     createUser(email, password)
       .then(() => {
         setNameAndImage(name, photo)

@@ -1,26 +1,29 @@
 import { useState } from "react";
 import AssignmentCard from "../components/AssignmentCard";
 import { useLoaderData } from "react-router-dom";
-import useAxiosSecure from "../hooks/useAxiosSecure";
-import { useQuery } from "@tanstack/react-query";
+
 import { useEffect } from "react";
+import axios from "axios";
 
 const Assignments = () => {
   const [assignments, setAssignments] = useState([]);
   const countData = useLoaderData();
-  const axiosSecure = useAxiosSecure();
 
   const [level, setLevel] = useState("");
-  const [perPageItem, setPerPageItem] = useState(10);
+  const [perPageItem, setPerPageItem] = useState(9);
   const [currentPage, setCurrentPage] = useState(0);
   const total = countData.total;
   const pageCount = Math.ceil(total / perPageItem);
 
   const pages = [...Array(pageCount).keys()];
-  const url = `/assignments?difficultLevel=${level}&page=${currentPage}&size=${perPageItem}`;
+
   useEffect(() => {
-    axiosSecure.get(url).then((res) => setAssignments(res.data));
-  }, [axiosSecure, url]);
+    axios
+      .get(
+        `https://assignment-management-system-server-side.vercel.app/assignments?difficultLevel=${level}&page=${currentPage}&size=${perPageItem}`
+      )
+      .then((res) => setAssignments(res.data));
+  }, [currentPage, level, perPageItem]);
 
   const handleNext = () => {
     if (currentPage < pages.length - 1) {
@@ -90,7 +93,7 @@ const Assignments = () => {
           id=""
         >
           <option value="5">5</option>
-          <option value="10">10</option>
+          <option value="9">9</option>
           <option value="20">20</option>
         </select>
       </div>

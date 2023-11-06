@@ -4,19 +4,18 @@ import useAuth from "../hooks/useAuth";
 import axios from "axios";
 import Swal from "sweetalert2";
 import { useEffect, useState } from "react";
+import useAxiosSecure from "../hooks/useAxiosSecure";
 
 const ViewAssignment = () => {
   const [assignment, setAssignment] = useState({});
   const { id } = useParams();
   const { user } = useAuth();
+  const axiosSecure = useAxiosSecure();
 
+  const url = `https://assignment-management-system-server-side.vercel.app/assignment/?id=${id}&email=${user.email}`;
   useEffect(() => {
-    axios
-      .get(`http://localhost:5000/assignment/?id=${id}&email=${user.email}`, {
-        withCredentials: true,
-      })
-      .then((res) => setAssignment(res.data));
-  }, [id, user.email]);
+    axiosSecure.get(url).then((res) => setAssignment(res.data));
+  }, [url, axiosSecure]);
 
   const { title, marks, thumbnailImage, difficultLevel, description, date } =
     assignment || {};
@@ -38,9 +37,11 @@ const ViewAssignment = () => {
       note: note,
     };
     axios
-      .post("http://localhost:5000/submit-assignment", submittedAssignment)
+      .post(
+        "https://assignment-management-system-server-side.vercel.app/submit-assignment",
+        submittedAssignment
+      )
       .then((res) => {
-        console.log(res.data);
         if (res.data.acknowledged) {
           Swal.fire({
             title: "Success",

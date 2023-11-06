@@ -46,16 +46,17 @@ const AuthProvider = ({ children }) => {
       setIsLoading(false);
       if (currentUser) {
         const email = loggedUser;
+
         axios
           .post(
-            "http://localhost:5000/jwt",
+            "https://assignment-management-system-server-side.vercel.app/jwt",
             { email },
             { withCredentials: true }
           )
           .then((res) => console.log(res.data));
       } else {
         axios.post(
-          "http://localhost:5000/logout",
+          "https://assignment-management-system-server-side.vercel.app/logout",
           { loggedUser },
           { withCredentials: true }
         );

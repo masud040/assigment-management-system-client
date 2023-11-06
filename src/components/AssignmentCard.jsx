@@ -21,7 +21,9 @@ const AssignmentCard = ({ assignment, assignments, setAssignments }) => {
     }).then((result) => {
       if (result.isConfirmed) {
         axios
-          .delete(`http://localhost:5000/assignment/?id=${id}&email=${email}`)
+          .delete(
+            `https://assignment-management-system-server-side.vercel.app/assignment/?id=${id}&email=${email}`
+          )
           .then((res) => {
             if (res.data.deletedCount > 0) {
               Swal.fire({

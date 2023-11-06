@@ -8,7 +8,9 @@ const Home = () => {
 
   const [faqs, setFaqs] = useState([]);
   useEffect(() => {
-    axios.get("http://localhost:5000/faq").then((res) => setFaqs(res.data));
+    axios
+      .get("https://assignment-management-system-server-side.vercel.app/faq")
+      .then((res) => setFaqs(res.data));
   }, []);
 
   return (

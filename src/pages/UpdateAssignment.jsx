@@ -18,9 +18,12 @@ const UpdateAssignment = () => {
   const { user } = useAuth();
   useEffect(() => {
     axios
-      .get(`http://localhost:5000/assignment/?id=${id}&email=${user.email}`, {
-        withCredentials: true,
-      })
+      .get(
+        `https://assignment-management-system-server-side.vercel.app/assignment/?id=${id}&email=${user.email}`,
+        {
+          withCredentials: true,
+        }
+      )
       .then((res) => setAssignment(res.data));
   }, [id, user?.email]);
   const {
@@ -54,7 +57,10 @@ const UpdateAssignment = () => {
       date,
     };
     axios
-      .patch(`http://localhost:5000/assignment/?id=${_id}`, updateData)
+      .patch(
+        `https://assignment-management-system-server-side.vercel.app/assignment/?id=${_id}`,
+        updateData
+      )
       .then((res) => {
         if (res.data.modifiedCount > 0) {
           Swal.fire({

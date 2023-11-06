@@ -1,17 +1,18 @@
 import { useEffect } from "react";
 import { useState } from "react";
 import useAuth from "../hooks/useAuth";
-
+import axios from "axios";
 import useAxiosSecure from "../hooks/useAxiosSecure";
 
 const MyAssignment = () => {
+  const axiosSecure = useAxiosSecure();
   const { user } = useAuth();
   const [submittedAssignment, setSubmittedAssignment] = useState([]);
-  const axiosSecure = useAxiosSecure();
-  const url = `/submitted-assignments/?email=${user?.email}`;
+
+  const url = `https://assignment-management-system-server-side.vercel.app/submitted-assignments/?email=${user?.email}`;
   useEffect(() => {
     axiosSecure.get(url).then((res) => setSubmittedAssignment(res.data));
-  }, [url, axiosSecure]);
+  }, [axiosSecure, url]);
   return (
     <div className="overflow-x-auto">
       <table className="table">

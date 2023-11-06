@@ -23,12 +23,17 @@ const route = createBrowserRouter([
         index: true,
         element: <Home />,
         loader: () =>
-          fetch("http://localhost:5000/features", { credentials: "include" }),
+          fetch(
+            "https://assignment-management-system-server-side.vercel.app/features"
+          ),
       },
       {
         path: "assignments",
         element: <Assignments />,
-        loader: () => fetch("http://localhost:5000/count"),
+        loader: () =>
+          fetch(
+            "https://assignment-management-system-server-side.vercel.app/count"
+          ),
       },
       {
         path: "viewAssignment/:id",

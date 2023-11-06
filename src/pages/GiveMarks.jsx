@@ -4,19 +4,17 @@ import { useParams } from "react-router-dom";
 import Swal from "sweetalert2";
 import useAuth from "../hooks/useAuth";
 import { useState } from "react";
+import useAxiosSecure from "../hooks/useAxiosSecure";
 
 const GiveMarks = () => {
   const [assignment, setAssignment] = useState({});
   const { user } = useAuth();
   const { id } = useParams();
+  const axiosSecure = useAxiosSecure();
+  const url = `/submit-assignment/?id=${id}&email=${user.email}`;
   useEffect(() => {
-    axios
-      .get(
-        `http://localhost:5000/submit-assignment/?id=${id}&email=${user.email}`,
-        { withCredentials: true }
-      )
-      .then((res) => setAssignment(res.data));
-  }, [id, user.email]);
+    axiosSecure.get(url).then((res) => setAssignment(res.data));
+  }, [axiosSecure, url]);
   const { note, pdf, _id } = assignment;
   const handleGiveMark = (e) => {
     e.preventDefault();
@@ -30,7 +28,7 @@ const GiveMarks = () => {
     };
     axios
       .patch(
-        `http://localhost:5000/submitted-assignment/?id=${_id}`,
+        `https://assignment-management-system-server-side.vercel.app/submitted-assignment/?id=${_id}`,
         feedBackObj
       )
       .then((res) => {

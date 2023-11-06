@@ -1,16 +1,18 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import useAuth from "../hooks/useAuth";
+
+import axios from "axios";
 import useAxiosSecure from "../hooks/useAxiosSecure";
 
 const SubmittedAssignments = () => {
   const [assignments, setAssignments] = useState();
   const { user } = useAuth();
   const axiosSecure = useAxiosSecure();
-  const url = `/submitted-assignments?status=pending&email=${user.email}`;
+  const url = `https://assignment-management-system-server-side.vercel.app/submitted-assignments?status=pending&email=${user.email}`;
   useEffect(() => {
     axiosSecure.get(url).then((res) => setAssignments(res.data));
-  }, [axiosSecure, url]);
+  }, [url, axiosSecure]);
 
   return (
     <div className="overflow-x-auto">

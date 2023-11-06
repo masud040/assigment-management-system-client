@@ -5,8 +5,10 @@ import "react-datepicker/dist/react-datepicker.css";
 import useAuth from "../hooks/useAuth";
 import axios from "axios";
 import Swal from "sweetalert2";
+
 const CreateAssignments = () => {
   const { user } = useAuth();
+
   const [startDate, setStartDate] = useState(new Date());
   const [level, setLevel] = useState("");
   const shortDate = new Date(startDate).toDateString();
@@ -29,9 +31,10 @@ const CreateAssignments = () => {
       description,
       date,
     };
+
     axios
       .post(
-        `http://localhost:5000/create-assignment/?email=${user.email}`,
+        `https://assignment-management-system-server-side.vercel.app/create-assignment/?email=${user.email}`,
         {
           assignment,
         },
