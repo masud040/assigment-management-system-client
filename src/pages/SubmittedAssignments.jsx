@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import useAuth from "../hooks/useAuth";
 
-import axios from "axios";
 import useAxiosSecure from "../hooks/useAxiosSecure";
 
 const SubmittedAssignments = () => {
