@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Navigate, useLoaderData, useNavigate } from "react-router-dom";
+import { useLoaderData, useNavigate } from "react-router-dom";
 
 import DatePicker from "react-datepicker";
 

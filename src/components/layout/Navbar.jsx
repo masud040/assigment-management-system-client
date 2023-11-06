@@ -49,7 +49,7 @@ const Navbar = () => {
             Create Assignments
           </NavLink>
           <NavLink
-            to="/my-assignments"
+            to={`/my-assignments/${user?.email}`}
             className={({ isActive, isPending }) =>
               isPending
                 ? "btn btn-ghost text-xs btn-sm"

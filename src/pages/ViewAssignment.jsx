@@ -19,6 +19,7 @@ const ViewAssignment = () => {
     const note = form.note.value;
 
     const submittedAssignment = {
+      email: user?.email,
       title,
       marks,
       examinee_name: user?.displayName,
@@ -57,6 +58,7 @@ const ViewAssignment = () => {
               name="pdf"
               className="input focus:outline-none input-info w-full"
               placeholder="Enter PDF URL"
+              required
             />
             <label className="label">
               <span className="font-bold label-text mt-4">Note</span>
@@ -67,13 +69,13 @@ const ViewAssignment = () => {
               placeholder="Enter a note"
             ></textarea>
 
-            <div className=" flex justify-between mt-6">
+            <div className=" flex justify-end gap-3 mt-6">
               <form method="dialog">
-                <button className="btn btn-error">Close</button>
+                <button className="btn btn-error text-xs">Close</button>
               </form>
               <button
                 type="submit"
-                className="btn text-white bg-gradient-to-r from-violet-500 to-fuchsia-500"
+                className="btn text-white text-xs bg-gradient-to-r from-violet-500 to-fuchsia-500"
               >
                 Submit
               </button>
