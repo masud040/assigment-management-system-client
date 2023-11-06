@@ -3,6 +3,7 @@ import Navbar from "./Navbar";
 import Sidebar from "./Sidebar";
 import Container from "../ui/Container";
 import logo from "../../assets/images/logo.png";
+import Footer from "../Footer";
 const MainLayout = () => {
   return (
     <div className="">
@@ -44,6 +45,7 @@ const MainLayout = () => {
         </div>
         <Container>
           <Outlet />
+          <Footer />
         </Container>
       </div>
 

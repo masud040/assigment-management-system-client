@@ -11,19 +11,23 @@ import PrivateRoute from "./PrivateRoute";
 import ViewAssignment from "../pages/ViewAssignment";
 import UpdateAssignment from "../pages/UpdateAssignment";
 import GiveMarks from "../pages/GiveMarks";
+import NotFound from "../pages/NotFound";
 
 const route = createBrowserRouter([
   {
     path: "/",
     element: <MainLayout />,
+    errorElement: <NotFound />,
     children: [
       {
         index: true,
         element: <Home />,
+        loader: () => fetch("http://localhost:5000/features"),
       },
       {
         path: "assignments",
         element: <Assignments />,
+        loader: () => fetch("http://localhost:5000/count"),
       },
       {
         path: "viewAssignment/:id",

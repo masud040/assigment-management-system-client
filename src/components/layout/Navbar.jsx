@@ -80,8 +80,8 @@ const Navbar = () => {
           </button>
           <img
             title={user?.displayName}
-            src="https://lh3.googleusercontent.com/a/ACg8ocLTcVaIDaosTPwL4HRx3WNqCJKi08icMAb3jUTJNxhYTw=s96-c-rg-br100"
-            className="w-10 h-10"
+            src={user?.photoURL}
+            className="w-10 h-10 rounded-full"
             alt="user photo"
           />
         </div>
