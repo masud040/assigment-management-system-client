@@ -1,9 +1,16 @@
-import { useState } from "react";
-import { Link, useLoaderData } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
+import useAuth from "../hooks/useAuth";
+import useAxiosSecure from "../hooks/useAxiosSecure";
 
 const SubmittedAssignments = () => {
-  const submittedAssignments = useLoaderData();
-  const [assignments, setAssignments] = useState(submittedAssignments);
+  const [assignments, setAssignments] = useState();
+  const { user } = useAuth();
+  const axiosSecure = useAxiosSecure();
+  const url = `/submitted-assignments?status=pending&email=${user.email}`;
+  useEffect(() => {
+    axiosSecure.get(url).then((res) => setAssignments(res.data));
+  }, [axiosSecure, url]);
 
   return (
     <div className="overflow-x-auto">

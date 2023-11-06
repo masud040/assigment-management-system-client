@@ -1,12 +1,22 @@
-import { useLoaderData } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import detailsThumbnail from "../assets/images/assignmentDetails.jpeg";
 import useAuth from "../hooks/useAuth";
 import axios from "axios";
 import Swal from "sweetalert2";
+import { useEffect, useState } from "react";
 
 const ViewAssignment = () => {
-  const assignment = useLoaderData();
+  const [assignment, setAssignment] = useState({});
+  const { id } = useParams();
   const { user } = useAuth();
+
+  useEffect(() => {
+    axios
+      .get(`http://localhost:5000/assignment/?id=${id}&email=${user.email}`, {
+        withCredentials: true,
+      })
+      .then((res) => setAssignment(res.data));
+  }, [id, user.email]);
 
   const { title, marks, thumbnailImage, difficultLevel, description, date } =
     assignment || {};

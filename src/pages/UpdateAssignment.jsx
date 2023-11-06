@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useLoaderData, useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 import DatePicker from "react-datepicker";
 
@@ -7,14 +7,22 @@ import "react-datepicker/dist/react-datepicker.css";
 import useAuth from "../hooks/useAuth";
 import axios from "axios";
 import Swal from "sweetalert2";
+import { useEffect } from "react";
 
 const UpdateAssignment = () => {
-  const assignment = useLoaderData();
-  const navigate = useNavigate();
-
-  const { user } = useAuth();
+  const [assignment, setAssignment] = useState({});
   const [startDate, setStartDate] = useState(new Date());
   const shortDate = new Date(startDate).toDateString();
+  const navigate = useNavigate();
+  const { id } = useParams();
+  const { user } = useAuth();
+  useEffect(() => {
+    axios
+      .get(`http://localhost:5000/assignment/?id=${id}&email=${user.email}`, {
+        withCredentials: true,
+      })
+      .then((res) => setAssignment(res.data));
+  }, [id, user?.email]);
   const {
     _id,
     title,
@@ -25,7 +33,7 @@ const UpdateAssignment = () => {
     date,
   } = assignment || {};
   const [level, setLevel] = useState(difficultLevel);
-  const convertedDate = new Date(date);
+
   const UpdateAssignment = (e) => {
     e.preventDefault();
     const form = e.target;
@@ -147,7 +155,7 @@ const UpdateAssignment = () => {
               <span className="label-text font-bold">Date</span>
             </label>
             <DatePicker
-              selected={convertedDate}
+              selected={startDate}
               className="p-3 w-full rounded-lg"
               onChange={(date) => setStartDate(date)}
             />

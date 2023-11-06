@@ -49,7 +49,7 @@ const Sidebar = () => {
             Create Assignments
           </NavLink>
           <NavLink
-            to={`/my-assignments/${user?.email}`}
+            to={`/my-assignments`}
             className={({ isActive, isPending }) =>
               isPending
                 ? "btn btn-ghost text-xs "

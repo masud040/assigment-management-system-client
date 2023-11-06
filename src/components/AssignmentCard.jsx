@@ -10,27 +10,40 @@ const AssignmentCard = ({ assignment, assignments, setAssignments }) => {
     assignment || {};
 
   const handleDelete = (id) => {
-    axios
-      .delete(`http://localhost:5000/assignment/?id=${id}&email=${email}`)
-      .then((res) => {
-        if (res.data.deletedCount > 0) {
-          Swal.fire({
-            title: "Success!",
-            text: "Deleted successfully",
-            icon: "success",
-            confirmButtonText: "Okay",
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        axios
+          .delete(`http://localhost:5000/assignment/?id=${id}&email=${email}`)
+          .then((res) => {
+            if (res.data.deletedCount > 0) {
+              Swal.fire({
+                title: "Deleted!",
+                text: "Your file has been deleted.",
+                icon: "success",
+              });
+              const remaining = assignments.filter(
+                (assign) => assign._id !== _id
+              );
+              setAssignments(remaining);
+            } else {
+              Swal.fire({
+                title: "Error!",
+                text: "You are not allowed to delete this assignment",
+                icon: "error",
+                confirmButtonText: "Okay",
+              });
+            }
           });
-          const remaining = assignments.filter((assign) => assign._id !== _id);
-          setAssignments(remaining);
-        } else {
-          Swal.fire({
-            title: "Error!",
-            text: "You are not allowed to delete this assignment",
-            icon: "error",
-            confirmButtonText: "Okay",
-          });
-        }
-      });
+      }
+    });
   };
 
   return (

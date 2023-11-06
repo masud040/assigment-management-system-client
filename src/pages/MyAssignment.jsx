@@ -1,8 +1,17 @@
-import { useLoaderData } from "react-router-dom";
+import { useEffect } from "react";
+import { useState } from "react";
+import useAuth from "../hooks/useAuth";
+
+import useAxiosSecure from "../hooks/useAxiosSecure";
 
 const MyAssignment = () => {
-  const submittedAssignment = useLoaderData();
-
+  const { user } = useAuth();
+  const [submittedAssignment, setSubmittedAssignment] = useState([]);
+  const axiosSecure = useAxiosSecure();
+  const url = `/submitted-assignments/?email=${user?.email}`;
+  useEffect(() => {
+    axiosSecure.get(url).then((res) => setSubmittedAssignment(res.data));
+  }, [url, axiosSecure]);
   return (
     <div className="overflow-x-auto">
       <table className="table">

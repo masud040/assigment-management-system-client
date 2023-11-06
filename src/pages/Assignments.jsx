@@ -2,10 +2,12 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import AssignmentCard from "../components/AssignmentCard";
 import { useLoaderData } from "react-router-dom";
+import useAxiosSecure from "../hooks/useAxiosSecure";
 
 const Assignments = () => {
   const [assignments, setAssignments] = useState([]);
   const countData = useLoaderData();
+  const axiosSecure = useAxiosSecure();
 
   const [level, setLevel] = useState("");
   const [perPageItem, setPerPageItem] = useState(10);
@@ -14,14 +16,10 @@ const Assignments = () => {
   const pageCount = Math.ceil(total / perPageItem);
 
   const pages = [...Array(pageCount).keys()];
-
+  const url = `/assignments?difficultLevel=${level}&page=${currentPage}&size=${perPageItem}`;
   useEffect(() => {
-    axios
-      .get(
-        `http://localhost:5000/assignments?difficultLevel=${level}&page=${currentPage}&size=${perPageItem}`
-      )
-      .then((res) => setAssignments(res.data));
-  }, [level, perPageItem, currentPage]);
+    axiosSecure.get(url).then((res) => setAssignments(res.data));
+  }, [axiosSecure, url]);
 
   const handleNext = () => {
     if (currentPage < pages.length - 1) {

@@ -1,13 +1,22 @@
 import axios from "axios";
-import { Document } from "react-pdf";
-import { useLoaderData } from "react-router-dom";
+import { useEffect } from "react";
+import { useParams } from "react-router-dom";
 import Swal from "sweetalert2";
-import { pdfjs } from "react-pdf";
-pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.js`;
+import useAuth from "../hooks/useAuth";
+import { useState } from "react";
 
-import "react-pdf/dist/Page/AnnotationLayer.css";
 const GiveMarks = () => {
-  const assignment = useLoaderData();
+  const [assignment, setAssignment] = useState({});
+  const { user } = useAuth();
+  const { id } = useParams();
+  useEffect(() => {
+    axios
+      .get(
+        `http://localhost:5000/submit-assignment/?id=${id}&email=${user.email}`,
+        { withCredentials: true }
+      )
+      .then((res) => setAssignment(res.data));
+  }, [id, user.email]);
   const { note, pdf, _id } = assignment;
   const handleGiveMark = (e) => {
     e.preventDefault();
@@ -38,9 +47,6 @@ const GiveMarks = () => {
   };
   return (
     <div className="w-[90%] mx-auto">
-      <div>
-        <Document file={pdf}></Document>
-      </div>
       <form onSubmit={handleGiveMark}>
         <label className="label">
           <span className="label-text font-bold text-lg">PDF Link</span>

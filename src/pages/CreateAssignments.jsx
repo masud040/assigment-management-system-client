@@ -30,7 +30,13 @@ const CreateAssignments = () => {
       date,
     };
     axios
-      .post("http://localhost:5000/create-assignment", { assignment })
+      .post(
+        `http://localhost:5000/create-assignment/?email=${user.email}`,
+        {
+          assignment,
+        },
+        { withCredentials: true }
+      )
       .then((res) => {
         if (res.data.acknowledged) {
           Swal.fire({
