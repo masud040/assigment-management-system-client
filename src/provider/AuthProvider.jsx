@@ -11,6 +11,7 @@ import { createContext, useEffect, useState } from "react";
 
 import auth from "../config/firebase.config";
 import axios from "axios";
+import { Navigate } from "react-router-dom";
 
 export const AuthContext = createContext(null);
 const AuthProvider = ({ children }) => {
@@ -41,24 +42,27 @@ const AuthProvider = ({ children }) => {
   };
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-      const loggedUser = currentUser?.email || user?.email;
+      const userEmail = currentUser?.email || user?.email;
+      const loggedUser = { email: userEmail };
       setUser(currentUser);
       setIsLoading(false);
       if (currentUser) {
-        const email = loggedUser;
-
         axios
           .post(
             "https://assignment-management-system-server-side.vercel.app/jwt",
-            { email },
-            { withCredentials: true }
+            loggedUser,
+            {
+              withCredentials: true,
+            }
           )
           .then((res) => console.log(res.data));
       } else {
         axios.post(
           "https://assignment-management-system-server-side.vercel.app/logout",
-          { loggedUser },
-          { withCredentials: true }
+          loggedUser,
+          {
+            withCredentials: true,
+          }
         );
       }
     });

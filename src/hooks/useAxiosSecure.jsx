@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useEffect } from "react";
 import useAuth from "./useAuth";
+import { useNavigate } from "react-router-dom";
 
 const axiosSecure = axios.create({
   baseURL: "https://assignment-management-system-server-side.vercel.app",
@@ -8,6 +9,7 @@ const axiosSecure = axios.create({
 });
 const useAxiosSecure = () => {
   const { logoutUser } = useAuth();
+  const navigate = useNavigate();
 
   useEffect(() => {
     axiosSecure.interceptors.response.use(
@@ -18,10 +20,11 @@ const useAxiosSecure = () => {
         if (error.response.status === 401 || error.response.status) {
           console.log(error);
           logoutUser();
+          navigate("/login");
         }
       }
     );
-  }, []);
+  }, [logoutUser, navigate]);
   return axiosSecure;
 };
 

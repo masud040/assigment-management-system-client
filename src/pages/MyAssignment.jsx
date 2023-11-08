@@ -27,6 +27,7 @@ const MyAssignment = () => {
             <th className="text-indigo-500 text-base font-black">
               Obtain Marks
             </th>
+            <th className="text-indigo-500 text-base font-black">Feedback</th>
 
             <th className="text-indigo-500 text-base font-black">Status</th>
             <th></th>
@@ -40,6 +41,7 @@ const MyAssignment = () => {
                 <td className="font-semibold">{assignment?.title}</td>
                 <td className="font-semibold">{assignment?.marks}</td>
                 <td className="font-semibold">{assignment?.obtainMark}</td>
+                <td className="font-semibold">{assignment?.feedback}</td>
                 <td className="font-semibold">
                   <button className="btn btn-sm text-xs bg-violet-400">
                     {assignment?.status}
