@@ -43,15 +43,17 @@ const GiveMarks = () => {
         }
       });
   };
+
   return (
     <div className="w-[90%] mx-auto">
       <form onSubmit={handleGiveMark}>
         <label className="label">
           <span className="label-text font-bold text-lg">PDF Link</span>
         </label>
-        <a href={pdf} className="font-semibold underline">
+        <a href={pdf} className="font-semibold underline ">
           {pdf}
         </a>
+        <iframe src={pdf} className="w-full h-[50vh] mt-4"></iframe>
         <label className="label">
           <span className="label-text font-bold text-lg">Note</span>
         </label>
